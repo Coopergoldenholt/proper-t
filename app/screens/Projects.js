@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 
 const Projects = (props) => {
 	const [projects, setProjects] = useState([]);
-	// console.log(projects);
+
 	useEffect(() => {
 		getProjects();
 	}, []);
@@ -38,26 +38,26 @@ const Projects = (props) => {
 
 	const rowData = projects.map((ele) => {
 		let completed = ele.completed ? "Completed" : "Incomplete";
-		console.log(ele.property_id);
+
 		let date = moment(ele.date).format("MM/DD/YYYY");
 		return props.user.user.user === "Admin"
 			? [
 					tableText(ele.name, ele.id),
 					tableTextNoClick(date),
-					tableTextNoClick(completed),
+					// tableTextNoClick(completed),
 					deleteText(ele.id),
 			  ]
 			: [
 					tableText(ele.name, ele.project_id),
 					tableTextNoClick(date),
-					tableTextNoClick(completed),
+					// tableTextNoClick(completed),
 			  ];
 	});
 
 	let headerDate =
 		props.user.user.user === "Admin"
-			? ["Name", "Date", "Completed", "Delete"]
-			: ["Name", "Date", "Completed"];
+			? ["Name", "Date", "Delete"]
+			: ["Name", "Date"];
 
 	return (
 		<View>

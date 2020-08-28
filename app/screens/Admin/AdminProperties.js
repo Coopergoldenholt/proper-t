@@ -58,7 +58,7 @@ const AdminProperties = (props) => {
 	);
 
 	const getTables = () => {
-		const tables = managedCompanies.map((company) => {
+		const tables = managedCompanies.map((company, index) => {
 			const headerData = ["Property Name", "Delete"];
 			let splitByCompany = properties.filter((property) => {
 				return property.managed_company_id === company.id;
@@ -78,7 +78,9 @@ const AdminProperties = (props) => {
 
 			return (
 				<>
-					<Text style={styles.companyName}>{companyName[0]}</Text>
+					<Text key={index} style={styles.companyName}>
+						{companyName[0]}
+					</Text>
 					<View style={styles.userContainer}>
 						<PropertyTable
 							key={companyName}

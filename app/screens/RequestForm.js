@@ -244,7 +244,6 @@ const RequestForm = (props) => {
 			? (filteredProjects = filteredProjects.splice(0, 5))
 			: null;
 		return filteredProjects.map((ele, key) => {
-			console.log(id);
 			let id;
 			props.user.user.user === "Admin" ? (id = ele.id) : (id = ele.project_id);
 			return (

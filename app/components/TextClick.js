@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 
 const TextClick = (props) => {
-	console.log(props.id);
+	
 	const handleClick = () => {
 		switch (props.selection) {
 			case "project":

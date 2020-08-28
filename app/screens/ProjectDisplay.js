@@ -20,11 +20,11 @@ const ProjectDisplay = (props) => {
 	useEffect(() => {
 		getProject();
 	}, []);
-	console.log(users);
+
 	const getProject = () => {
 		setLoading(true);
 		axios
-			.get(`http://localhost:4068/api/project/${props.route.params.id}`)
+			.get(`http://localhost:4068/api/project/users/${props.route.params.id}`)
 			.then((res) => setUsers(res.data));
 		axios
 			.get(`http://localhost:4068/api/project/forms/${props.route.params.id}`)
@@ -77,7 +77,7 @@ const ProjectDisplay = (props) => {
 		</View>
 	) : (
 		<SafeAreaView style={styles.safeContainer}>
-			<UserDisplay />
+			<UserDisplay users={users} projectId={props.route.params.id} />
 			{projects[0] ? (
 				<FlatList
 					style={styles.container}
