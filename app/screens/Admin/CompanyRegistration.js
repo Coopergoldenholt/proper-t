@@ -17,9 +17,7 @@ const CompanyRegistration = (props) => {
 
 	const handleRegister = () => {
 		axios
-			// .post("http://64.227.51.108:4068/api/company/managing-company", {
-			// 	companyName: companyName,
-			// })
+
 			.post("http://localhost:4068/api/company/managing-company", {
 				companyName: companyName,
 			})

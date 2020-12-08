@@ -78,7 +78,6 @@ const RequestForm = (props) => {
 		case "Admin":
 			getProperties = () => {
 				axios
-					// .get("http://64.227.51.108:4068/api/company/properties")
 					.get("http://localhost:4068/api/company/properties")
 					.then((res) => setProperties(res.data));
 			};
@@ -87,7 +86,6 @@ const RequestForm = (props) => {
 		case "employee":
 			getProperties = () => {
 				axios
-					// .get("http://64.227.51.108:4068/api/company/properties")
 					.get("http://localhost:4068/api/company/properties")
 					.then((res) => setProperties(res.data));
 			};
@@ -96,7 +94,7 @@ const RequestForm = (props) => {
 		default:
 			getProperties = () => {
 				axios
-					// .get("http://64.227.51.108:4068/api/user/properties")
+
 					.get("http://localhost:4068/api/user/properties")
 					.then((res) => setProperties(res.data));
 			};
@@ -120,16 +118,6 @@ const RequestForm = (props) => {
 		else {
 			setLoading(true);
 			axios
-				// .post("http://64.227.51.108:4068/api/company/photo", {
-				// 	imageOne: imageOne,
-				// 	imageTwo: imageTwo,
-				// 	imageThree: imageThree,
-				// 	imageFour: imageFour,
-				// 	title: title,
-				// 	summary: summary,
-				// 	propertyId: propertyId,
-				// 	projectId: projectId,
-				// })
 				.post("http://localhost:4068/api/company/photo", {
 					imageOne: imageOne,
 					imageTwo: imageTwo,
@@ -265,6 +253,7 @@ const RequestForm = (props) => {
 	const handleProjectGet = () => {
 		axios
 			.get("http://localhost:4068/api/projects")
+
 			.then((res) => setProjects(res.data));
 	};
 

@@ -29,17 +29,14 @@ function Register(props) {
 		} else if (!name) {
 			Alert.alert("Please Enter Your Name");
 		} else {
+			const lowerEmail = email.toLowerCase();
 			axios
-				.post("http://64.227.51.108:4068/api/signup", {
+
+				.post("http://localhost:4068/api/signup", {
 					email: email,
 					password: password,
 					name: name,
 				})
-				// .post("http://localhost:4068/api/signup", {
-				// 	email: email,
-				// 	password: password,
-				// 	name: name,
-				// })
 				.then((res) =>
 					props.saveSession(
 						res.data.companyId,

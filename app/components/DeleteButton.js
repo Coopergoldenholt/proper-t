@@ -20,8 +20,7 @@ const DeleteButton = (props) => {
 							text: "Yes",
 							onPress: () =>
 								Axios.put(
-									// `http://localhost:4068/api/user/delete/${props.id}`
-									`http://64.227.51.108:4068/api/user/delete/${props.id}`
+									`http://localhost:4068/api/user/delete/${props.id}`
 								).then((res) =>
 									Alert.alert(
 										//title
@@ -57,7 +56,8 @@ const DeleteButton = (props) => {
 							text: "Yes",
 							onPress: () =>
 								Axios.put(
-									`http://localhost:4068/api/company/property/delete/${props.id}`
+									// `http://localhost:4068/api/company/property/delete/${props.id}`
+									`http://64.227.51.108:4068/api/company/property/delete/${props.id}`
 								).then((res) =>
 									Alert.alert(
 										//title
@@ -93,7 +93,8 @@ const DeleteButton = (props) => {
 							text: "Yes",
 							onPress: () =>
 								Axios.put(
-									`http://localhost:4068/api/project/delete/${props.id}`
+									// `http://localhost:4068/api/project/delete/${props.id}`
+									`http://64.227.51.108:4068/api/project/delete/${props.id}`
 								).then((res) =>
 									Alert.alert(
 										//title
@@ -117,8 +118,6 @@ const DeleteButton = (props) => {
 			default:
 				null;
 		}
-
-		// Axios.put(`http://localhost:4068/api/user/delete/${props.id}`);
 	};
 	return (
 		<TouchableOpacity onPress={() => handleDelete()}>

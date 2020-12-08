@@ -17,18 +17,12 @@ const AdminUsers = ({ navigation }) => {
 	const [users, setUsers] = useState([]);
 	const [employees, setEmployees] = useState([]);
 	useEffect(() => {
-		axios
-			.get("http://64.227.51.108:4068/api/company/users")
-			// .get("http://localhost:4068/api/company/users")
-			.then((res) => {
-				setUsers(res.data);
-			});
-		axios
-			.get("http://64.227.51.108:4068/api/company/employees")
-			// .get("http://localhost:4068/api/company/employees")
-			.then((res) => {
-				setEmployees(res.data);
-			});
+		axios.get("http://localhost:4068/api/company/customers").then((res) => {
+			setUsers(res.data);
+		});
+		axios.get("http://localhost:4068/api/company/employees").then((res) => {
+			setEmployees(res.data);
+		});
 	}, []);
 
 	const deleteButton = (id) => (
@@ -36,9 +30,7 @@ const AdminUsers = ({ navigation }) => {
 	);
 	const editButton = (id) => <EditButton style={styles.tableText} id={id} />;
 
-	const tableText = (text, id) => (
-		<TextClick selection="user" text={text} id={id} />
-	);
+	const tableText = (text, id) => <TextClick text={text} id={id} />;
 
 	const userRowData = users.map((ele, index) => {
 		return [

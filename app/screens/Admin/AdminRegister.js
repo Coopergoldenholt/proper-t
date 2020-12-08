@@ -25,19 +25,14 @@ function AdminRegister(props) {
 
 	const handleRegister = () => {
 		axios
-			.post("http://64.227.51.108:4068/api/register", {
+
+			.post("http://localhost:4068/api/register", {
 				email: email,
+
 				typeOfUser: typeOfUser,
 				managedCompany: company,
 				companyId: props.user.user.companyId,
 			})
-			// .post("http://localhost:4068/api/register", {
-			// 	email: email,
-
-			// 	typeOfUser: typeOfUser,
-			// 	managedCompany: company,
-			// 	companyId: props.user.user.companyId,
-			// })
 			.then((res) =>
 				Alert.alert(
 					//title
@@ -60,10 +55,8 @@ function AdminRegister(props) {
 	};
 	const getManagedCompanies = () => {
 		axios
-			.get(
-				`http://64.227.51.108:4068/api/companies/${props.user.user.companyId}`
-			)
-			// .get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+
+			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

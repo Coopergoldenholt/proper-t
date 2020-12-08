@@ -23,12 +23,10 @@ const PropertyDisplay = (props) => {
 	const getProperty = async () => {
 		setLoading(true);
 		await axios
+
 			.get(
-				`http://64.227.51.108:4068/api/company/property/${props.route.params.id}?page=${page}`
+				`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
 			)
-			// .get(
-			// 	`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
-			// )
 			.then((res) => {
 				setPostList(res.data);
 				setLoading(false);
@@ -39,8 +37,7 @@ const PropertyDisplay = (props) => {
 		setPage(page + 15);
 		await axios
 			.get(
-				`http://64.227.51.108:4068/api/company/property/${props.route.params.id}?page=${page}`
-				// `http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
+				`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
 			)
 			.then((res) => {
 				setPostList(res.data);

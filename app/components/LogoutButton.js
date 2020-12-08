@@ -6,10 +6,7 @@ import { destroySession } from "../../ducks/reducers/userReducer";
 
 const LogoutButton = (props) => {
 	const handleLogout = () => {
-		axios.post(
-			// "http://localhost:4068/api/user/logout"
-			`http://64.227.51.108:4068/api/user/logout`
-		);
+		axios.post("http://localhost:4068/api/user/logout");
 		props.destroySession();
 	};
 	return (

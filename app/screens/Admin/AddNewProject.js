@@ -36,9 +36,7 @@ const AddNewProject = (props) => {
 
 	const handleRegister = () => {
 		axios
-			// .post("http://64.227.51.108:4068/api/projects", {
-			// 	companyName: companyName,
-			// })
+
 			.post("http://localhost:4068/api/projects", {
 				name: projectName,
 			})
@@ -63,9 +61,7 @@ const AddNewProject = (props) => {
 
 	const getManagedCompanies = () => {
 		axios
-			// .get(
-			// 	`http://64.227.51.108:4068/api/companies/${props.user.user.companyId}`
-			// )
+
 			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
@@ -83,6 +79,7 @@ const AddNewProject = (props) => {
 			.get(
 				`http://localhost:4068/api/company/managed-company/properties/${companyId}`
 			)
+
 			.then((res) => setProperties(res.data));
 		return null;
 	};
@@ -129,6 +126,7 @@ const AddNewProject = (props) => {
 					name: projectName,
 					propertyId: propertyId,
 				})
+
 				.then((res) => {
 					Alert.alert(
 						//title

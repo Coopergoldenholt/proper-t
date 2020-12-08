@@ -37,10 +37,12 @@ const ProjectUsersDisplay = (props) => {
 	};
 
 	const userSearchDisplay = () => {
-		let filteredUsers = users.filter((ele) => {
+		let firstFilter = users.filter((ele) => ele.name);
+		console.log(firstFilter);
+		let filteredUsers = firstFilter.filter((ele) => {
 			return ele.name.toLowerCase().includes(userSearch.toLowerCase());
 		});
-
+		console.log(filteredUsers);
 		filteredUsers.length > 5
 			? (filteredUsers = filteredUsers.splice(0, 5))
 			: null;
@@ -67,7 +69,11 @@ const ProjectUsersDisplay = (props) => {
 
 	const handleAddPress = () => {
 		userId
-			? Axios.post("http://localhost:4068/api/project/user", {
+			? // Axios.post("http://localhost:4068/api/project/user", {
+			  // 		userId: userId,
+			  // 		projectId: props.projectId,
+			  //   })
+			  Axios.post("http://64.227.51.108:4068/api/project/user", {
 					userId: userId,
 					projectId: props.projectId,
 			  })

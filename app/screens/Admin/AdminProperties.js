@@ -29,7 +29,7 @@ const AdminProperties = (props) => {
 	useEffect(() => {
 		getManagedCompanies();
 		axios
-			// .get("http://64.227.51.108:4068/api/company/properties")
+
 			.get("http://localhost:4068/api/company/properties")
 			.then((res) => setProperties(res.data));
 	}, []);
@@ -39,9 +39,7 @@ const AdminProperties = (props) => {
 
 	const getManagedCompanies = () => {
 		axios
-			// .get
-			// `http://64.227.51.108:4068/api/companies/${props.user.user.companyId}`
-			// ()
+
 			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
@@ -54,7 +52,12 @@ const AdminProperties = (props) => {
 	const editButton = (id) => <EditButton id={id} />;
 
 	const tableText = (text, id) => (
-		<TextClick text={text} id={id} navigation={props.navigation} />
+		<TextClick
+			selection={"user"}
+			text={text}
+			id={id}
+			navigation={props.navigation}
+		/>
 	);
 
 	const getTables = () => {
@@ -78,12 +81,10 @@ const AdminProperties = (props) => {
 
 			return (
 				<>
-					<Text key={index} style={styles.companyName}>
-						{companyName[0]}
-					</Text>
+					<Text style={styles.companyName}>{companyName[0]}</Text>
 					<View style={styles.userContainer}>
 						<PropertyTable
-							key={companyName}
+							key={index}
 							rowData={rowData}
 							headerData={headerData}
 						/>

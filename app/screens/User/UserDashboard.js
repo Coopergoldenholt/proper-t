@@ -12,6 +12,12 @@ function UserDashboard({ navigation }) {
 				>
 					<Text>Properties</Text>
 				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() => navigation.navigate("Projects")}
+				>
+					<Text>Projects</Text>
+				</TouchableOpacity>
 			</View>
 			<LogoutButton />
 		</View>

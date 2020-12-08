@@ -28,17 +28,14 @@ const AdminProperties = (props) => {
 	useEffect(() => {
 		getManagedCompanies();
 		axios
-			.get("http://64.227.51.108:4068/api/company/properties")
-			// .get("http://localhost:4068/api/company/properties")
+
+			.get("http://localhost:4068/api/company/properties")
 			.then((res) => setProperties(res.data));
 	}, []);
 
 	const getManagedCompanies = () => {
 		axios
-			.get(
-				`http://64.227.51.108:4068/api/companies/${props.user.user.companyId}`
-				// `http://localhost:4068/api/companies/${props.user.user.companyId}`
-			)
+			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

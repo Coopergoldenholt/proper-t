@@ -25,11 +25,7 @@ const AdminPropertyRegistration = (props) => {
 	const handleRegister = () => {
 		company
 			? axios
-					// .post("http://64.227.51.108:4068/api/company/properties", {
-					// 	name: name,
-					// 	managedCompany: company,
-					// 	companyId: props.user.user.companyId,
-					// })
+
 					.post("http://localhost:4068/api/company/properties", {
 						name: name,
 						managedCompany: company,
@@ -56,9 +52,7 @@ const AdminPropertyRegistration = (props) => {
 	};
 	const getManagedCompanies = () => {
 		axios
-			// .get(
-			// 	`http://64.227.51.108:4068/api/companies/${props.user.user.companyId}`
-			// )
+
 			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
@@ -70,7 +64,7 @@ const AdminPropertyRegistration = (props) => {
 				return { label: ele.company_name, value: ele.id };
 		  })
 		: null;
-	
+
 	return (
 		<View style={styles.background}>
 			{/* {getManagedCompanies()} */}

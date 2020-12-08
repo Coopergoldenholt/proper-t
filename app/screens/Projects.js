@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 
 const Projects = (props) => {
 	const [projects, setProjects] = useState([]);
-
+	console.log(projects);
 	useEffect(() => {
 		getProjects();
 	}, []);
@@ -18,6 +18,7 @@ const Projects = (props) => {
 	const getProjects = () => {
 		axios
 			.get("http://localhost:4068/api/projects")
+
 			.then((res) => setProjects(res.data));
 	};
 
@@ -72,9 +73,11 @@ const Projects = (props) => {
 				</View>
 			) : null}
 
-			<View style={styles.userContainer}>
-				<ProjectTable rowData={rowData} headerData={headerDate} />
-			</View>
+			{projects ? (
+				<View style={styles.userContainer}>
+					<ProjectTable rowData={rowData} headerData={headerDate} />
+				</View>
+			) : null}
 		</View>
 	);
 };

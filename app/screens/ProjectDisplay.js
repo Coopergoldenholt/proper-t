@@ -25,9 +25,11 @@ const ProjectDisplay = (props) => {
 		setLoading(true);
 		axios
 			.get(`http://localhost:4068/api/project/users/${props.route.params.id}`)
+
 			.then((res) => setUsers(res.data));
 		axios
 			.get(`http://localhost:4068/api/project/forms/${props.route.params.id}`)
+
 			// .get(
 			// 	`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
 			// )
