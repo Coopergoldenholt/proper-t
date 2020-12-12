@@ -15,30 +15,85 @@ import AddNewProject from "../app/screens/Admin/AddNewProject";
 
 const Stack = createStackNavigator();
 
-const AdminStack = (props) => {
+export const HomeStack = (props) => {
 	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Dashboard" component={AdminDashboard} />
-				<Stack.Screen name="Users" component={AdminUsers} />
-				<Stack.Screen name="Register" component={AdminRegister} />
-				<Stack.Screen name="Properties" component={AdminPoperties} />
-				<Stack.Screen name="Projects" component={Projects} />
-				<Stack.Screen
-					name="Property Registration"
-					component={AdminPropertyRegistraition}
-				/>
-				<Stack.Screen
-					name="Company Registration"
-					component={CompanyRegistration}
-				/>
-				<Stack.Screen name="Form Request" component={RequestForm} />
-				<Stack.Screen name="Property" component={PropertyDisplay} />
-				<Stack.Screen name="Project" component={ProjectDisplay} />
-				<Stack.Screen name="Create Project" component={AddNewProject} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		// <NavigationContainer>
+		<Stack.Navigator>
+			<Stack.Screen name="Dashboard" component={AdminDashboard} />
+			<Stack.Screen name="Users" component={AdminUsers} />
+			<Stack.Screen name="Register" component={AdminRegister} />
+			<Stack.Screen name="Properties" component={AdminPoperties} />
+			<Stack.Screen name="Projects" component={Projects} />
+			<Stack.Screen
+				name="Property Registration"
+				component={AdminPropertyRegistraition}
+			/>
+			<Stack.Screen
+				name="Company Registration"
+				component={CompanyRegistration}
+			/>
+			<Stack.Screen name="Form Request" component={RequestForm} />
+			<Stack.Screen name="Property" component={PropertyDisplay} />
+			<Stack.Screen name="Project" component={ProjectDisplay} />
+			<Stack.Screen name="Create Project" component={AddNewProject} />
+		</Stack.Navigator>
+		// </NavigationContainer>
 	);
 };
 
-export default AdminStack;
+export const UserStack = (props) => {
+	return (
+		// <NavigationContainer>
+		<Stack.Navigator>
+			<Stack.Screen name="Users" component={AdminUsers} />
+			<Stack.Screen name="Register" component={AdminRegister} />
+			<Stack.Screen name="Properties" component={AdminPoperties} />
+			<Stack.Screen name="Projects" component={Projects} />
+			<Stack.Screen
+				name="Property Registration"
+				component={AdminPropertyRegistraition}
+			/>
+			<Stack.Screen
+				name="Company Registration"
+				component={CompanyRegistration}
+			/>
+			<Stack.Screen name="Form Request" component={RequestForm} />
+			<Stack.Screen name="Property" component={PropertyDisplay} />
+			<Stack.Screen name="Project" component={ProjectDisplay} />
+			<Stack.Screen name="Create Project" component={AddNewProject} />
+		</Stack.Navigator>
+		// </NavigationContainer>
+	);
+};
+export const PropertiesStack = (props) => {
+	return (
+		// <NavigationContainer>
+		<Stack.Navigator>
+			{/* <Stack.Screen name="Register" component={AdminRegister} /> */}
+			<Stack.Screen name="Properties" component={AdminPoperties} />
+			<Stack.Screen name="Projects" component={Projects} />
+			<Stack.Screen
+				name="Property Registration"
+				component={AdminPropertyRegistraition}
+			/>
+			<Stack.Screen
+				name="Company Registration"
+				component={CompanyRegistration}
+			/>
+			<Stack.Screen name="Form Request" component={RequestForm} />
+			<Stack.Screen name="Property" component={PropertyDisplay} />
+			<Stack.Screen name="Project" component={ProjectDisplay} />
+			<Stack.Screen name="Create Project" component={AddNewProject} />
+		</Stack.Navigator>
+		// </NavigationContainer>
+	);
+};
+export const FormsStack = (props) => {
+	return (
+		// <NavigationContainer>
+		<Stack.Navigator>
+			<Stack.Screen name="Form Request" component={RequestForm} />
+		</Stack.Navigator>
+		// </NavigationContainer>
+	);
+};

@@ -10,16 +10,19 @@ import {
 	ScrollView,
 	ActivityIndicator,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
+import ImagePicker from "react-native-image-picker";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 import DropDownPicker from "react-native-dropdown-picker";
 import PropertySearch from "../components/PropertySearch";
+import Icon from "react-native-vector-icons/Feather";
 
 const RequestForm = (props) => {
-	const [summary, setSummary] = useState("");
-	const [title, setTitle] = useState("");
+	const [beforeImages, setBeforeImages] = useState([]);
+	const [afterImages, setAfterImages] = useState([]);
+
 	const [imageOne, setImageOne] = useState(null);
 	const [imageTwo, setImageTwo] = useState(null);
 	const [imageThree, setImageThree] = useState(null);
@@ -29,14 +32,8 @@ const RequestForm = (props) => {
 	const [propertySelected, setPropertySelected] = useState(false);
 	const [propertyId, setPropertyId] = useState(null);
 	const [propertyInputClick, setPropertyInputClick] = useState(false);
-	const [typeOfForm, setTypeOfForm] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [project, setProject] = useState(false);
-	const [projects, setProjects] = useState([]);
-	const [projectSearch, setProjectSearch] = useState("");
-	const [projectSelected, setProjectSelected] = useState(false);
-	const [projectId, setProjectId] = useState(null);
-	const [projectInputClick, setProjectInputClick] = useState(false);
 
 	useEffect(() => {
 		getProperties();
@@ -46,33 +43,69 @@ const RequestForm = (props) => {
 		propertiesDisplay();
 	}, [propertySearch]);
 
-	let openImagePickerAsync = async () => {
-		let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+	let openImagePickerAsync = async (type) => {
+		// let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
-		if (permissionResult.granted === false) {
-			alert("Permission to access camera roll is required!");
-			return;
-		}
+		// if (permissionResult.granted === false) {
+		// 	alert("Permission to access camera roll is required!");
+		// 	return;
+		// }
 
-		let pickerResult = await ImagePicker.launchImageLibraryAsync({
-			allowsEditing: true,
-			aspect: [4, 3],
-			base64: true,
+		// let pickerResult = await ImagePicker.launchImageLibrary({
+		// 	allowsEditing: true,
+		// 	aspect: [4, 3],
+		// 	base64: true,
+		// });
+
+		// if (pickerResult.cancelled === true) {
+		// 	return;
+		// }
+
+		var options = {
+			title: "Select Image",
+			customButtons: [
+				{
+					name: "customOptionKey",
+					title: "Choose Photo from Custom Option",
+				},
+			],
+			storageOptions: {
+				skipBackup: true,
+				path: "images",
+			},
+		};
+		let image = await ImagePicker.showImagePicker(options, (response) => {
+			// console.log("Response = ", response);
+			if (response.didCancel) {
+				console.log("User cancelled image picker");
+			} else if (response.error) {
+				console.log("ImagePicker Error: ", response.error);
+			} else if (response.customButton) {
+				console.log("User tapped custom button: ", response.customButton);
+				// alert(response.customButton);
+			} else {
+				// console.log(response);
+
+				setBeforeImages([`data:image/jpg;base64,${response.data}`]);
+				return response;
+			}
 		});
 
-		if (pickerResult.cancelled === true) {
-			return;
-		}
-		if (!imageOne) {
-			setImageOne(`data:image/jpg;base64,${pickerResult.base64}`);
-		} else if (!imageTwo) {
-			setImageTwo(`data:image/jpg;base64,${pickerResult.base64}`);
-		} else if (!imageThree) {
-			setImageThree(`data:image/jpg;base64,${pickerResult.base64}`);
-		} else if (!imageFour) {
-			setImageFour(`data:image/jpg;base64,${pickerResult.base64}`);
+		switch (type) {
+			case "beforeImage":
+				setBeforeImages([
+					...beforeImages,
+					`data:image/jpg;base64,${image.data}`,
+				]);
+			case "afterImage":
+				setAfterImages([
+					...afterImages,
+					`data:image/jpg;base64,${pickerResult.base64}`,
+				]);
 		}
 	};
+	console.log(beforeImages.length);
+
 	let getProperties;
 	switch (props.user.user.user) {
 		case "Admin":
@@ -148,13 +181,15 @@ const RequestForm = (props) => {
 		}
 	};
 
-	const displayImageOne = () => {
-		if (imageOne !== null) {
-			return (
-				// <View style={styles.container}>
-				<Image source={{ uri: imageOne }} style={styles.thumbnail} />
-				// </View>
-			);
+	const displayImage = (imageType) => {
+		if (imageType === "beforeImages") {
+			return beforeImages.map((ele) => (
+				<Image source={{ uri: ele }} style={styles.thumbnail} />
+			));
+		} else {
+			return afterImages.map((ele) => (
+				<Image source={{ uri: ele }} style={styles.thumbnail} />
+			));
 		}
 	};
 	const displayImageTwo = () => {
@@ -215,35 +250,35 @@ const RequestForm = (props) => {
 		// setPropertyInputClick(false);
 	};
 
-	useEffect(() => {
-		projectsDisplay();
-	}, [projectSearch]);
+	// useEffect(() => {
+	// 	projectsDisplay();
+	// }, [projectSearch]);
 
-	useEffect(() => {
-		handleProjectGet();
-	}, [projectInputClick]);
+	// useEffect(() => {
+	// 	handleProjectGet();
+	// }, [projectInputClick]);
 
-	const projectsDisplay = () => {
-		let filteredProjects = projects.filter((ele) =>
-			ele.name.toLowerCase().includes(projectSearch.toLowerCase())
-		);
+	// const projectsDisplay = () => {
+	// 	let filteredProjects = projects.filter((ele) =>
+	// 		ele.name.toLowerCase().includes(projectSearch.toLowerCase())
+	// 	);
 
-		filteredProjects.length > 5
-			? (filteredProjects = filteredProjects.splice(0, 5))
-			: null;
-		return filteredProjects.map((ele, key) => {
-			let id;
-			props.user.user.user === "Admin" ? (id = ele.id) : (id = ele.project_id);
-			return (
-				<PropertySearch
-					propertyName={ele.name}
-					id={id}
-					key={key}
-					handleSelectedProperty={(name, id) => handleSelectedProject(name, id)}
-				/>
-			);
-		});
-	};
+	// 	filteredProjects.length > 5
+	// 		? (filteredProjects = filteredProjects.splice(0, 5))
+	// 		: null;
+	// 	return filteredProjects.map((ele, key) => {
+	// 		let id;
+	// 		props.user.user.user === "Admin" ? (id = ele.id) : (id = ele.project_id);
+	// 		return (
+	// 			<PropertySearch
+	// 				propertyName={ele.name}
+	// 				id={id}
+	// 				key={key}
+	// 				handleSelectedProperty={(name, id) => handleSelectedProject(name, id)}
+	// 			/>
+	// 		);
+	// 	});
+	// };
 
 	const handleProjectSearch = (project) => {
 		setProjectSelected(false);
@@ -267,17 +302,34 @@ const RequestForm = (props) => {
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.background}>
-				<TextInput
+				<DropDownPicker
+					items={[
+						{ label: "Yes", value: true },
+						{ label: "No", value: false },
+						{ label: "Stuff", value: false },
+					]}
+					defaultNull
+					placeholder="Is this for a project?"
+					containerStyle={{
+						height: 40,
+						width: 200,
+						marginBottom: 10,
+						marginTop: 10,
+					}}
+					onChangeItem={(item) => setProject(item.value)}
+					multiple
+				/>
+				{/* <TextInput
 					style={styles.input}
 					placeholder="Title"
 					onChangeText={(title) => setTitle(title)}
-				/>
-				<TextInput
+				/> */}
+				{/* <TextInput
 					style={styles.inputSummary}
 					placeholder="Summary"
 					onChangeText={(summary) => setSummary(summary)}
 					multiline={true}
-				/>
+				/> */}
 
 				<TextInput
 					style={styles.propertyInput}
@@ -292,38 +344,21 @@ const RequestForm = (props) => {
 						? null
 						: propertiesDisplay()
 					: null}
-				<DropDownPicker
-					items={[
-						{ label: "Yes", value: true },
-						{ label: "No", value: false },
-					]}
-					defaultNull
-					placeholder="Is this for a project?"
-					containerStyle={{
-						height: 40,
-						width: 200,
-						marginBottom: 10,
-						marginTop: 10,
-					}}
-					onChangeItem={(item) => setProject(item.value)}
-				/>
-				{project ? (
-					<>
-						<TextInput
-							style={styles.propertyInput}
-							placeholder="Project"
-							onFocus={() => setProjectInputClick(true)}
-							// onBlur={() => setPropertyInputClick(false)}
-							onChangeText={(project) => handleProjectSearch(project)}
-							value={projectSearch}
-						/>
-						{projectInputClick
-							? projectSelected
-								? null
-								: projectsDisplay()
-							: null}
-					</>
-				) : null}
+				<Text>Before:</Text>
+				{beforeImages.length >= 3 ? null : (
+					<TouchableOpacity onPress={() => openImagePickerAsync("beforeImage")}>
+						<Icon name="plus" size={30} color="black" />
+					</TouchableOpacity>
+				)}
+				<View style={styles.imageContainer}>
+					{displayImage("beforeImages")}
+				</View>
+
+				<Text>After:</Text>
+				<TouchableOpacity onPress={() => openImagePickerAsync("afterImage")}>
+					<Icon name="plus" size={30} color="black" />
+				</TouchableOpacity>
+				{displayImage("afterImages")}
 
 				<TouchableOpacity
 					style={styles.button}
@@ -338,7 +373,6 @@ const RequestForm = (props) => {
 				) : null}
 
 				<View style={styles.imageContainer}>
-					{displayImageOne()}
 					{displayImageTwo()}
 					{displayImageThree()}
 					{displayImageFour()}
@@ -372,6 +406,7 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		backgroundColor: "#c48273",
 		borderRadius: 5,
+		width: 150,
 		alignItems: "center",
 		padding: 10,
 		marginBottom: 10,

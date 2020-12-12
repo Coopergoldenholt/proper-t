@@ -19,7 +19,8 @@ export default function WelcomeScreen({ navigation }) {
 			{/* <TextInput placeholder="E-mail" style={styles.input} /> */}
 			{/* <Image source={{"https://static.thenounproject.com/png/1081856-200.png"}} /> */}
 
-			<Text style={styles.text}>Proper-T</Text>
+			<Text style={styles.text}>Golden</Text>
+			<Text style={styles.text}>Landscaping</Text>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.button}
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
 	button: {
 		marginTop: 10,
 		paddingTop: 10,
-		backgroundColor: "#c48273",
+		backgroundColor: "#d6b512",
 		borderRadius: 5,
 		alignItems: "center",
 		padding: 10,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
 		width: "50%",
 	},
 	buttonText: {
-		color: "white",
+		color: "black",
 	},
 	input: {
 		width: 200,

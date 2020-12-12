@@ -109,14 +109,14 @@ const styles = StyleSheet.create({
 		width: "50%",
 		marginTop: 10,
 		paddingTop: 10,
-		backgroundColor: "#c48273",
+		backgroundColor: "#d6b512",
 		borderRadius: 5,
 		alignItems: "center",
 		padding: 10,
 		color: "white",
 	},
 	buttonText: {
-		color: "white",
+		color: "black",
 	},
 	input: {
 		width: 200,
