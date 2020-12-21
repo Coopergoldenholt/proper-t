@@ -2,7 +2,6 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 
 const TextClick = (props) => {
-	
 	const handleClick = () => {
 		switch (props.selection) {
 			case "project":
@@ -64,6 +63,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "black",
 		marginBottom: 10,
+		color: "black",
 	},
 	tableText: {
 		margin: 5,

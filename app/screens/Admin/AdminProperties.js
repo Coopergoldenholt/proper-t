@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "black",
 		marginBottom: 10,
+		color: "black",
 	},
 	propertyInput: {
 		width: 200,
@@ -268,6 +269,7 @@ const styles = StyleSheet.create({
 
 		borderRadius: 5,
 		backgroundColor: "white",
+		color: "black",
 	},
 	searchSection: {
 		flex: 1,

@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		borderRadius: 5,
 		backgroundColor: "white",
+		color: "black",
 	},
 	text: {
 		color: "white",
