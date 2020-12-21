@@ -25,7 +25,7 @@ function Login(props) {
 			setLoading(true);
 			axios
 
-				.post("http://localhost:4068/api/login", {
+				.post("http://142.93.92.22:4135/api/login", {
 					email: email,
 					password: password,
 				})

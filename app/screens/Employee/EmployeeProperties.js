@@ -29,13 +29,15 @@ const AdminProperties = (props) => {
 		getManagedCompanies();
 		axios
 
-			.get("http://localhost:4068/api/company/properties")
+			.get("http://142.93.92.22:4135/api/company/properties")
 			.then((res) => setProperties(res.data));
 	}, []);
 
 	const getManagedCompanies = () => {
 		axios
-			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+			.get(
+				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
+			)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
@@ -45,7 +47,12 @@ const AdminProperties = (props) => {
 	const editButton = (id) => <EditButton id={id} />;
 
 	const tableText = (text, id) => (
-		<TextClick text={text} id={id} navigation={props.navigation} />
+		<TextClick
+			text={text}
+			id={id}
+			navigation={props.navigation}
+			selection={"user"}
+		/>
 	);
 
 	const getTables = () => {

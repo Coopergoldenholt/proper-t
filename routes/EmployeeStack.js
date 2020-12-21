@@ -1,28 +1,40 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import PropertyDisplay from "../app/screens/PropertyDisplay";
 import { createStackNavigator } from "@react-navigation/stack";
-import EmployeeDashboard from "../app/screens/Employee/EmployeeDashboard";
-import Form from "../app/screens/RequestForm";
-import Properties from "../app/screens/Employee/EmployeeProperties";
-import Property from "../app/screens/PropertyDisplay";
-import Projects from "../app/screens/Projects";
-import ProjectsDisplay from "../app/screens/ProjectDisplay";
+import RequestForm from "../app/screens/RequestForm";
+import Dashboard from "../app/screens/Dashboard";
+import EmployeeProperties from "../app/screens/Employee/EmployeeProperties";
 
 const Stack = createStackNavigator();
 
-const UserStack = (props) => {
+export const EmployeeHomeStack = (props) => {
 	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Dashboard" component={EmployeeDashboard} />
-				<Stack.Screen name="Form" component={Form} />
-				<Stack.Screen name="Properties" component={Properties} />
-				<Stack.Screen name="Property" component={Property} />
-				<Stack.Screen name="Projects" component={Projects} />
-				<Stack.Screen name="Project" component={ProjectsDisplay} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		// <NavigationContainer>
+		<Stack.Navigator>
+			<Stack.Screen name="Dashboard" component={Dashboard} />
+		</Stack.Navigator>
+		// </NavigationContainer>
 	);
 };
 
-export default UserStack;
+export const EmployeePropertiesStack = (props) => {
+	return (
+		// <NavigationContainer>
+		<Stack.Navigator>
+			{/* <Stack.Screen name="Register" component={AdminRegister} /> */}
+			<Stack.Screen name="Properties" component={EmployeeProperties} />
+
+			<Stack.Screen name="Property" component={PropertyDisplay} />
+		</Stack.Navigator>
+		// </NavigationContainer>
+	);
+};
+export const EmployeeFormsStack = (props) => {
+	return (
+		// <NavigationContainer>
+		<Stack.Navigator>
+			<Stack.Screen name="Form Request" component={RequestForm} />
+		</Stack.Navigator>
+		// </NavigationContainer>
+	);
+};

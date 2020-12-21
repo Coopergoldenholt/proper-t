@@ -2,14 +2,18 @@ import * as React from "react";
 import { connect } from "react-redux";
 // import UserStack from "./UserStack";
 import {
-	HomeStack,
-	UserStack,
-	PropertiesStack,
-	FormsStack,
+	AdminHomeStack,
+	AdminUserStack,
+	AdminPropertiesStack,
+	AdminFormsStack,
 } from "./AdminStack";
 import AdminUsersStack from "./UsersStack";
 import WelcomeStack from "./HomeStack";
-import EmployeeStack from "./EmployeeStack";
+import {
+	EmployeeHomeStack,
+	EmployeePropertiesStack,
+	EmployeeFormsStack,
+} from "./EmployeeStack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -22,16 +26,27 @@ const Stacks = (props) => {
 				return (
 					<NavigationContainer>
 						<Tab.Navigator>
-							<Tab.Screen name="Home" component={HomeStack} />
-							<Tab.Screen name="Forms" component={FormsStack} />
-							<Tab.Screen name="Properties" component={PropertiesStack} />
-							<Tab.Screen name="Users" component={UserStack} />
+							<Tab.Screen name="Home" component={AdminHomeStack} />
+							<Tab.Screen name="Forms" component={AdminFormsStack} />
+							<Tab.Screen name="Properties" component={AdminPropertiesStack} />
+							<Tab.Screen name="Users" component={AdminUserStack} />
 						</Tab.Navigator>
 					</NavigationContainer>
 				);
 
 			case "employee":
-				return <EmployeeStack />;
+				return (
+					<NavigationContainer>
+						<Tab.Navigator>
+							<Tab.Screen name="Home" component={EmployeeHomeStack} />
+							<Tab.Screen name="Forms" component={EmployeeFormsStack} />
+							<Tab.Screen
+								name="Properties"
+								component={EmployeePropertiesStack}
+							/>
+						</Tab.Navigator>
+					</NavigationContainer>
+				);
 
 			default:
 				return <UserStack />;

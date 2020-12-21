@@ -26,7 +26,7 @@ const AdminPropertyRegistration = (props) => {
 		company
 			? axios
 
-					.post("http://localhost:4068/api/company/properties", {
+					.post("http://142.93.92.22:4135/api/company/properties", {
 						name: name,
 						managedCompany: company,
 						companyId: props.user.user.companyId,
@@ -53,7 +53,9 @@ const AdminPropertyRegistration = (props) => {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+			.get(
+				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
+			)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

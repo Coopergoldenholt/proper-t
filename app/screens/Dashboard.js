@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-	StyleSheet,
-	FlatList,
 	View,
 	Text,
-	Image,
-	ActivityIndicator,
+	FlatList,
+	StyleSheet,
 	SafeAreaView,
 	RefreshControl,
+	ActivityIndicator,
 } from "react-native";
-import moment from "moment";
-import axios from "axios";
 import ListDisplay from "../components/ListDisplay";
+import { connect } from "react-redux";
+import axios from "axios";
 
 const wait = (timeout) => {
 	return new Promise((resolve) => {
@@ -19,47 +18,43 @@ const wait = (timeout) => {
 	});
 };
 
-const PropertyDisplay = (props) => {
+const Dashboard = (props) => {
 	const [postList, setPostList] = useState([]);
-	const [page, setPage] = useState(0);
 	const [isLoading, setLoading] = useState(false);
+	const [page, setPage] = useState(0);
 	const [refreshing, setRefreshing] = useState(false);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
 		setPage(0);
-		getProperty(true);
+		getProperties(true);
 		wait(2000).then(() => setRefreshing(false));
 	}, []);
 
+	// console.log(props.user);
 	useEffect(() => {
-		getProperty(false);
+		getProperties();
 	}, []);
 
-	const getProperty = async (bool) => {
-		if (!bool) {
-			setLoading(true);
-		}
-
-		setPage(0);
+	const getProperties = async () => {
+		setLoading(true);
+		// switch (props.user.user) {
+		// 	case "Admin":
 		await axios
 
-			.get(
-				`http://142.93.92.22:4135/api/company/property/${props.route.params.id}?page=${page}`
-			)
+			.get(`http://142.93.92.22:4135/api/company/forms?page=${page}`)
 			.then((res) => {
 				setPostList(res.data);
 				setLoading(false);
 			});
+		// }
 	};
 
 	const handleLoadMore = async () => {
 		let pages = page + 15;
 
 		await axios
-			.get(
-				`http://142.93.92.22:4135/api/company/property/${props.route.params.id}?page=${pages}`
-			)
+			.get(`http://142.93.92.22:4135/api/company/forms?page=${pages}`)
 			.then((res) => {
 				// console.log(res.data);
 				setPostList([...postList, ...res.data]);
@@ -97,7 +92,9 @@ const PropertyDisplay = (props) => {
 	);
 };
 
-export default PropertyDisplay;
+const mapStateToProps = (state) => state.user;
+
+export default connect(mapStateToProps)(Dashboard);
 
 const styles = StyleSheet.create({
 	safeContainer: {

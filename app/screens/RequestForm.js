@@ -22,18 +22,15 @@ import Icon from "react-native-vector-icons/Feather";
 const RequestForm = (props) => {
 	const [beforeImages, setBeforeImages] = useState([]);
 	const [afterImages, setAfterImages] = useState([]);
-
-	const [imageOne, setImageOne] = useState(null);
-	const [imageTwo, setImageTwo] = useState(null);
-	const [imageThree, setImageThree] = useState(null);
-	const [imageFour, setImageFour] = useState(null);
+	const [typeOfWork, setTypeOfWork] = useState([]);
 	const [properties, setProperties] = useState([]);
 	const [propertySearch, setPropertySearch] = useState("");
 	const [propertySelected, setPropertySelected] = useState(false);
 	const [propertyId, setPropertyId] = useState(null);
 	const [propertyInputClick, setPropertyInputClick] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [project, setProject] = useState(false);
+	const [loadingBeforeImage, setBeforeLoadingImage] = useState(false);
+	const [loadingAfterImage, setAfterLoadingImage] = useState(false);
 
 	useEffect(() => {
 		getProperties();
@@ -44,6 +41,11 @@ const RequestForm = (props) => {
 	}, [propertySearch]);
 
 	let openImagePickerAsync = async (type) => {
+		// if (type === "beforeImage") {
+		// 	setBeforeLoadingImage(true);
+		// } else {
+		// 	setAfterLoadingImage(true);
+		// }
 		// let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
 		// if (permissionResult.granted === false) {
@@ -61,57 +63,45 @@ const RequestForm = (props) => {
 		// 	return;
 		// }
 
-		var options = {
-			title: "Select Image",
-			customButtons: [
-				{
-					name: "customOptionKey",
-					title: "Choose Photo from Custom Option",
-				},
-			],
-			storageOptions: {
-				skipBackup: true,
-				path: "images",
-			},
-		};
-		let image = await ImagePicker.showImagePicker(options, (response) => {
+		let image = await ImagePicker.showImagePicker((response) => {
 			// console.log("Response = ", response);
+			if (type === "beforeImage") {
+				setBeforeLoadingImage(true);
+			} else {
+				setAfterLoadingImage(true);
+			}
+
 			if (response.didCancel) {
-				console.log("User cancelled image picker");
+				setBeforeLoadingImage(false);
+				setAfterLoadingImage(false);
 			} else if (response.error) {
 				console.log("ImagePicker Error: ", response.error);
 			} else if (response.customButton) {
 				console.log("User tapped custom button: ", response.customButton);
 				// alert(response.customButton);
 			} else {
-				// console.log(response);
-
-				setBeforeImages([`data:image/jpg;base64,${response.data}`]);
-				return response;
+				if (type === "beforeImage") {
+					setBeforeLoadingImage(false);
+					// let arr = beforeImages;
+					// arr.push(`data:image/jpg;base64,${response.data}`);
+					// setBeforeImages(arr);
+					setBeforeImages([...beforeImages, response.uri]);
+					// return response;
+				} else {
+					setAfterLoadingImage(false);
+					setAfterImages([...afterImages, response.uri]);
+					// return response;
+				}
 			}
 		});
-
-		switch (type) {
-			case "beforeImage":
-				setBeforeImages([
-					...beforeImages,
-					`data:image/jpg;base64,${image.data}`,
-				]);
-			case "afterImage":
-				setAfterImages([
-					...afterImages,
-					`data:image/jpg;base64,${pickerResult.base64}`,
-				]);
-		}
 	};
-	console.log(beforeImages.length);
 
 	let getProperties;
 	switch (props.user.user.user) {
 		case "Admin":
 			getProperties = () => {
 				axios
-					.get("http://localhost:4068/api/company/properties")
+					.get("http://142.93.92.22:4135/api/company/properties")
 					.then((res) => setProperties(res.data));
 			};
 			break;
@@ -119,47 +109,50 @@ const RequestForm = (props) => {
 		case "employee":
 			getProperties = () => {
 				axios
-					.get("http://localhost:4068/api/company/properties")
+					.get("http://142.93.92.22:4135/api/company/properties")
 					.then((res) => setProperties(res.data));
 			};
 			break;
 
 		default:
 			getProperties = () => {
+				lehi;
 				axios
 
-					.get("http://localhost:4068/api/user/properties")
+					.get("http://142.93.92.22:4135/api/user/properties")
 					.then((res) => setProperties(res.data));
 			};
 	}
 
 	const handleSubmit = () => {
-		if (!title) {
-			Alert.alert("Please fill out a Title");
-		} else if (!summary) {
-			Alert.alert("Please fill out a Summary");
-		} else if (!propertySelected) {
-			Alert.alert("Please select a Property from the list");
-		} else if (title.length > 20) {
-			Alert.alert("Title cannot be longer then 20 characters");
-		} else if (summary.length > 200) {
-			Alert.alert("Summary cannot be longer then 200 characters");
+		if (!propertySelected) {
+			Alert.alert("Please Select a Property from the list");
+		} else if (!typeOfWork[0]) {
+			Alert.alert("Please Select a Type Of Work");
+		} else if (beforeImages < 4) {
+			Alert.alert("Please Select Four Before Images");
+		} else if (afterImages < 4) {
+			Alert.alert("Please Select Four After Images");
 		}
 		// else if (!typeOfForm) {
 		// 	Alert.alert("Please select a Type of Form");
 		// }
 		else {
 			setLoading(true);
+			let typeOfWorkString = typeOfWork.join(", ");
+
 			axios
-				.post("http://localhost:4068/api/company/photo", {
-					imageOne: imageOne,
-					imageTwo: imageTwo,
-					imageThree: imageThree,
-					imageFour: imageFour,
-					title: title,
-					summary: summary,
+				.post("http://142.93.92.22:4135/api/company/photo", {
+					imageOne: beforeImages[0],
+					imageTwo: beforeImages[1],
+					imageThree: beforeImages[2],
+					imageFour: beforeImages[3],
+					imageFive: afterImages[0],
+					imageSix: afterImages[1],
+					imageSeven: afterImages[2],
+					imageEight: afterImages[3],
+					typeOfWork: typeOfWorkString,
 					propertyId: propertyId,
-					projectId: projectId,
 				})
 				.then((res) => {
 					setLoading(false);
@@ -167,11 +160,18 @@ const RequestForm = (props) => {
 						//title
 						"Form Submitted",
 						//body
-						"You will be sent back to the Dashboard",
+						"Thank you for your Submission",
 						[
 							{
-								text: "Sounds Good",
-								onPress: () => props.navigation.popToTop(),
+								text: "No Problem",
+								onPress: () => {
+									setBeforeImages([]);
+									setAfterImages([]);
+									setPropertySearch("");
+									setPropertySelected(false);
+									setPropertyId(null);
+									setTypeOfWork([]);
+								},
 							},
 						],
 						{ cancelable: false }
@@ -184,39 +184,20 @@ const RequestForm = (props) => {
 	const displayImage = (imageType) => {
 		if (imageType === "beforeImages") {
 			return beforeImages.map((ele) => (
-				<Image source={{ uri: ele }} style={styles.thumbnail} />
+				<>
+					<Image source={{ uri: ele }} style={styles.thumbnail} />
+					{loadingBeforeImage ? <ActivityIndicator /> : null}
+				</>
 			));
 		} else {
-			return afterImages.map((ele) => (
-				<Image source={{ uri: ele }} style={styles.thumbnail} />
+			return afterImages.map((ele, indx, arr) => (
+				<>
+					<Image source={{ uri: ele }} style={styles.thumbnail} />
+					{loadingAfterImage && indx === arr.length - 1 ? (
+						<ActivityIndicator />
+					) : null}
+				</>
 			));
-		}
-	};
-	const displayImageTwo = () => {
-		if (imageTwo !== null) {
-			return (
-				// <View style={styles.container}>
-				<Image source={{ uri: imageTwo }} style={styles.thumbnail} />
-				// </View>
-			);
-		}
-	};
-	const displayImageThree = () => {
-		if (imageThree !== null) {
-			return (
-				// <View style={styles.container}>
-				<Image source={{ uri: imageThree }} style={styles.thumbnail} />
-				// </View>
-			);
-		}
-	};
-	const displayImageFour = () => {
-		if (imageFour !== null) {
-			return (
-				// <View style={styles.container}>
-				<Image source={{ uri: imageFour }} style={styles.thumbnail} />
-				// </View>
-			);
 		}
 	};
 
@@ -247,38 +228,7 @@ const RequestForm = (props) => {
 		setPropertySearch(name);
 		setPropertySelected(true);
 		setPropertyId(id);
-		// setPropertyInputClick(false);
 	};
-
-	// useEffect(() => {
-	// 	projectsDisplay();
-	// }, [projectSearch]);
-
-	// useEffect(() => {
-	// 	handleProjectGet();
-	// }, [projectInputClick]);
-
-	// const projectsDisplay = () => {
-	// 	let filteredProjects = projects.filter((ele) =>
-	// 		ele.name.toLowerCase().includes(projectSearch.toLowerCase())
-	// 	);
-
-	// 	filteredProjects.length > 5
-	// 		? (filteredProjects = filteredProjects.splice(0, 5))
-	// 		: null;
-	// 	return filteredProjects.map((ele, key) => {
-	// 		let id;
-	// 		props.user.user.user === "Admin" ? (id = ele.id) : (id = ele.project_id);
-	// 		return (
-	// 			<PropertySearch
-	// 				propertyName={ele.name}
-	// 				id={id}
-	// 				key={key}
-	// 				handleSelectedProperty={(name, id) => handleSelectedProject(name, id)}
-	// 			/>
-	// 		);
-	// 	});
-	// };
 
 	const handleProjectSearch = (project) => {
 		setProjectSelected(false);
@@ -304,21 +254,66 @@ const RequestForm = (props) => {
 			<View style={styles.background}>
 				<DropDownPicker
 					items={[
-						{ label: "Yes", value: true },
-						{ label: "No", value: false },
-						{ label: "Stuff", value: false },
+						{ label: "Mowing", value: "Mowing" },
+						{ label: "Irrigation", value: "Irrigation" },
+						{ label: "Plant/Rock Areas", value: "Plant/Rock Areas" },
+						{ label: "Cleanup", value: "Cleanup" },
+
+						{
+							label: "Fertilization/Spraying",
+							value: "Fertilization/Spraying",
+						},
+						{ label: "Site Inspection", value: "Site Inspection" },
+						{ label: "Special Projects", value: "Special Projects" },
+						{ label: "Snow Plowing", value: "Snow Plowing" },
+						{ label: "Snow Sidewalks", value: "Snow Sidewalks" },
+
+						{ label: "Parking De-Icing", value: "Parking DeIcing" },
+						{ label: "Sidewalk De-Icing", value: "Sidewalk De-Icing" },
+						{ label: "Aeration", value: "Aeration" },
+						{ label: "Pruning", value: "Pruning" },
+						{ label: "Leaf Pickup", value: "Leaf Pickup" },
+						{ label: "Turn On/Off", value: "Turn On/Off" },
 					]}
-					defaultNull
-					placeholder="Is this for a project?"
+					defaultValue={typeOfWork}
+					placeholder="Type Of Work"
 					containerStyle={{
 						height: 40,
 						width: 200,
 						marginBottom: 10,
 						marginTop: 10,
 					}}
-					onChangeItem={(item) => setProject(item.value)}
-					multiple
+					onChangeItem={(item) => setTypeOfWork(item)}
+					multiple={true}
 				/>
+				{/* <DropDownPicker
+					items={[
+						{
+							label: "UK",
+							value: "uk",
+							icon: () => <Icon name="flag" size={18} color="#900" />,
+						},
+						{
+							label: "France",
+							value: "france",
+							icon: () => <Icon name="flag" size={18} color="#900" />,
+						},
+					]}
+					multiple={true}
+					multipleText="%d items have been selected."
+					min={0}
+					max={10}
+					defaultValue={typeOfWork}
+					containerStyle={{ height: 40 }}
+					itemStyle={{
+						justifyContent: "flex-start",
+					}}
+					onChangeItem={(item) =>
+						this.setState({
+							countries: item, // an array of the selected items
+						})
+					}
+				/> */}
 				{/* <TextInput
 					style={styles.input}
 					placeholder="Title"
@@ -345,20 +340,26 @@ const RequestForm = (props) => {
 						: propertiesDisplay()
 					: null}
 				<Text>Before:</Text>
-				{beforeImages.length >= 3 ? null : (
+				{beforeImages.length >= 4 ? null : (
 					<TouchableOpacity onPress={() => openImagePickerAsync("beforeImage")}>
 						<Icon name="plus" size={30} color="black" />
 					</TouchableOpacity>
 				)}
 				<View style={styles.imageContainer}>
 					{displayImage("beforeImages")}
+					{loadingBeforeImage ? <ActivityIndicator /> : null}
 				</View>
 
 				<Text>After:</Text>
-				<TouchableOpacity onPress={() => openImagePickerAsync("afterImage")}>
-					<Icon name="plus" size={30} color="black" />
-				</TouchableOpacity>
-				{displayImage("afterImages")}
+				{afterImages.length >= 4 ? null : (
+					<TouchableOpacity onPress={() => openImagePickerAsync("afterImage")}>
+						<Icon name="plus" size={30} color="black" />
+					</TouchableOpacity>
+				)}
+				{/* {loadingAfterImage && afterImages.length === 0 ? (
+					<ActivityIndicator />
+				) : null} */}
+				<View style={styles.imageContainer}>{displayImage("afterImages")}</View>
 
 				<TouchableOpacity
 					style={styles.button}
@@ -371,20 +372,6 @@ const RequestForm = (props) => {
 						<ActivityIndicator size="large" color="#c48273" />
 					</View>
 				) : null}
-
-				<View style={styles.imageContainer}>
-					{displayImageTwo()}
-					{displayImageThree()}
-					{displayImageFour()}
-				</View>
-				{imageFour ? null : (
-					<TouchableOpacity onPress={openImagePickerAsync}>
-						<Image
-							style={styles.image}
-							source={require("../assets/add-photo-icon.png")}
-						/>
-					</TouchableOpacity>
-				)}
 			</View>
 		</ScrollView>
 	);
@@ -430,7 +417,7 @@ const styles = StyleSheet.create({
 	imageContainer: {
 		display: "flex",
 		flexDirection: "row",
-		width: "100%",
+		// width: "100%",
 		flexWrap: "wrap",
 		justifyContent: "center",
 		marginBottom: 10,

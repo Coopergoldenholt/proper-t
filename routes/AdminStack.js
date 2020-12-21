@@ -12,14 +12,15 @@ import CompanyRegistration from "../app/screens/Admin/CompanyRegistration";
 import Projects from "../app/screens/Projects";
 import ProjectDisplay from "../app/screens/ProjectDisplay";
 import AddNewProject from "../app/screens/Admin/AddNewProject";
+import Dashboard from "../app/screens/Dashboard";
 
 const Stack = createStackNavigator();
 
-export const HomeStack = (props) => {
+export const AdminHomeStack = (props) => {
 	return (
 		// <NavigationContainer>
 		<Stack.Navigator>
-			<Stack.Screen name="Dashboard" component={AdminDashboard} />
+			<Stack.Screen name="Dashboard" component={Dashboard} />
 			<Stack.Screen name="Users" component={AdminUsers} />
 			<Stack.Screen name="Register" component={AdminRegister} />
 			<Stack.Screen name="Properties" component={AdminPoperties} />
@@ -41,7 +42,7 @@ export const HomeStack = (props) => {
 	);
 };
 
-export const UserStack = (props) => {
+export const AdminUserStack = (props) => {
 	return (
 		// <NavigationContainer>
 		<Stack.Navigator>
@@ -65,7 +66,7 @@ export const UserStack = (props) => {
 		// </NavigationContainer>
 	);
 };
-export const PropertiesStack = (props) => {
+export const AdminPropertiesStack = (props) => {
 	return (
 		// <NavigationContainer>
 		<Stack.Navigator>
@@ -88,7 +89,7 @@ export const PropertiesStack = (props) => {
 		// </NavigationContainer>
 	);
 };
-export const FormsStack = (props) => {
+export const AdminFormsStack = (props) => {
 	return (
 		// <NavigationContainer>
 		<Stack.Navigator>

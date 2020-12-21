@@ -24,11 +24,15 @@ const ProjectDisplay = (props) => {
 	const getProject = () => {
 		setLoading(true);
 		axios
-			.get(`http://localhost:4068/api/project/users/${props.route.params.id}`)
+			.get(
+				`http://142.93.92.22:4135/api/project/users/${props.route.params.id}`
+			)
 
 			.then((res) => setUsers(res.data));
 		axios
-			.get(`http://localhost:4068/api/project/forms/${props.route.params.id}`)
+			.get(
+				`http://142.93.92.22:4135/api/project/forms/${props.route.params.id}`
+			)
 
 			// .get(
 			// 	`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`

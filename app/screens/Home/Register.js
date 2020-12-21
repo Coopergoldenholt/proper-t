@@ -32,7 +32,7 @@ function Register(props) {
 			const lowerEmail = email.toLowerCase();
 			axios
 
-				.post("http://localhost:4068/api/signup", {
+				.post("http://142.93.92.22:4135/api/signup", {
 					email: email,
 					password: password,
 					name: name,

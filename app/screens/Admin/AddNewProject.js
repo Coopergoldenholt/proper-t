@@ -121,7 +121,7 @@ const AddNewProject = (props) => {
 			Alert.alert("Please Select A Property From the Dropdown");
 		} else {
 			axios
-				.post(`http://localhost:4068/api/projects`, {
+				.post(`http://142.93.92.22:4135/api/projects`, {
 					mangagedCompanyId: companyId,
 					name: projectName,
 					propertyId: propertyId,

@@ -8,6 +8,7 @@ import {
 	TextInput,
 	Image,
 	Alert,
+	RefreshControl,
 } from "react-native";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -18,6 +19,12 @@ import TextClick from "../../components/TextClick";
 import EditButton from "../../components/EditButton";
 import PropertySearch from "../../components/PropertySearch";
 
+const wait = (timeout) => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, timeout);
+	});
+};
+
 const AdminProperties = (props) => {
 	const [properties, setProperties] = useState([]);
 	const [managedCompanies, setManagedCompanies] = useState([]);
@@ -25,12 +32,31 @@ const AdminProperties = (props) => {
 	const [propertySearch, setPropertySearch] = useState("");
 	const [propertyInputClick, setPropertyInputClick] = useState(false);
 	const [propertyId, setPropertyId] = useState(null);
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		axios
+
+			.get(
+				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
+			)
+			.then((res) => {
+				setManagedCompanies(res.data);
+			});
+		getManagedCompanies();
+		axios
+
+			.get("http://142.93.92.22:4135/api/company/properties")
+			.then((res) => setProperties(res.data));
+		wait(2000).then(() => setRefreshing(false));
+	}, []);
 
 	useEffect(() => {
 		getManagedCompanies();
 		axios
 
-			.get("http://localhost:4068/api/company/properties")
+			.get("http://142.93.92.22:4135/api/company/properties")
 			.then((res) => setProperties(res.data));
 	}, []);
 	useEffect(() => {
@@ -40,7 +66,9 @@ const AdminProperties = (props) => {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+			.get(
+				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
+			)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
@@ -132,7 +160,12 @@ const AdminProperties = (props) => {
 	};
 
 	return (
-		<ScrollView style={styles.container}>
+		<ScrollView
+			contentContainerStyle={styles.scrollView}
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+			}
+		>
 			<View style={styles.background}>
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity

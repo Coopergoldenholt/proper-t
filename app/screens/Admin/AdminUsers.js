@@ -6,6 +6,7 @@ import {
 	TouchableOpacity,
 	Alert,
 	ScrollView,
+	RefreshControl,
 } from "react-native";
 import axios from "axios";
 import UserTable from "../../components/Table";
@@ -13,14 +14,33 @@ import DeleteButton from "../../components/DeleteButton";
 import EditButton from "../../components/EditButton";
 import TextClick from "../../components/TextClick";
 
+const wait = (timeout) => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, timeout);
+	});
+};
+
 const AdminUsers = ({ navigation }) => {
 	const [users, setUsers] = useState([]);
 	const [employees, setEmployees] = useState([]);
-	useEffect(() => {
-		axios.get("http://localhost:4068/api/company/customers").then((res) => {
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		axios.get("http://142.93.92.22:4135/api/company/customers").then((res) => {
 			setUsers(res.data);
 		});
-		axios.get("http://localhost:4068/api/company/employees").then((res) => {
+		axios.get("http://142.93.92.22:4135/api/company/employees").then((res) => {
+			setEmployees(res.data);
+		});
+		wait(2000).then(() => setRefreshing(false));
+	}, []);
+
+	useEffect(() => {
+		axios.get("http://142.93.92.22:4135/api/company/customers").then((res) => {
+			setUsers(res.data);
+		});
+		axios.get("http://142.93.92.22:4135/api/company/employees").then((res) => {
 			setEmployees(res.data);
 		});
 	}, []);
@@ -52,7 +72,12 @@ const AdminUsers = ({ navigation }) => {
 	const employeeHeaderData = ["Name", "Email", "Delete"];
 
 	return (
-		<ScrollView style={styles.container}>
+		<ScrollView
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+			}
+			style={styles.container}
+		>
 			<View style={styles.background}>
 				<TouchableOpacity
 					style={styles.button}

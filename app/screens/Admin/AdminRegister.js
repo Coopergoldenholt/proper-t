@@ -26,7 +26,7 @@ function AdminRegister(props) {
 	const handleRegister = () => {
 		axios
 
-			.post("http://localhost:4068/api/register", {
+			.post("http://142.93.92.22:4135/api/register", {
 				email: email,
 
 				typeOfUser: typeOfUser,
@@ -56,7 +56,9 @@ function AdminRegister(props) {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+			.get(
+				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
+			)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
