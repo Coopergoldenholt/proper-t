@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import Axios from "axios";
+import { URL } from "../../config";
 
 const DeleteButton = (props) => {
 	const handleDelete = () => {
@@ -19,9 +20,7 @@ const DeleteButton = (props) => {
 						{
 							text: "Yes",
 							onPress: () =>
-								Axios.put(
-									`http://localhost:4068/api/user/delete/${props.id}`
-								).then((res) =>
+								Axios.put(`${URL}/api/user/delete/${props.id}`).then((res) =>
 									Alert.alert(
 										//title
 										`User Deleted`,
@@ -56,8 +55,7 @@ const DeleteButton = (props) => {
 							text: "Yes",
 							onPress: () =>
 								Axios.put(
-									// `http://localhost:4068/api/company/property/delete/${props.id}`
-									`http://64.227.51.108:4068/api/company/property/delete/${props.id}`
+									`${URL}/api/company/property/delete/${props.id}`
 								).then((res) =>
 									Alert.alert(
 										//title
@@ -92,10 +90,7 @@ const DeleteButton = (props) => {
 						{
 							text: "Yes",
 							onPress: () =>
-								Axios.put(
-									// `http://localhost:4068/api/project/delete/${props.id}`
-									`http://64.227.51.108:4068/api/project/delete/${props.id}`
-								).then((res) =>
+								Axios.put(`${URL}/api/project/delete/${props.id}`).then((res) =>
 									Alert.alert(
 										//title
 										`Property Deleted`,

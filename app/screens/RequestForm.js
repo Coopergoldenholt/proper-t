@@ -10,14 +10,17 @@ import {
 	ScrollView,
 	ActivityIndicator,
 } from "react-native";
-// import * as ImagePicker from "expo-image-picker";
-import ImagePicker from "react-native-image-picker";
+
+// import ImagePicker from "react-native-image-picker";
+import ImagePicker from "react-native-image-crop-picker";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 import DropDownPicker from "react-native-dropdown-picker";
 import PropertySearch from "../components/PropertySearch";
 import Icon from "react-native-vector-icons/Feather";
+
+import { URL } from "../../config";
 
 const RequestForm = (props) => {
 	const [beforeImages, setBeforeImages] = useState([]);
@@ -40,68 +43,76 @@ const RequestForm = (props) => {
 		propertiesDisplay();
 	}, [propertySearch]);
 
-	let openImagePickerAsync = async (type) => {
-		// if (type === "beforeImage") {
-		// 	setBeforeLoadingImage(true);
-		// } else {
-		// 	setAfterLoadingImage(true);
-		// }
-		// let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-
-		// if (permissionResult.granted === false) {
-		// 	alert("Permission to access camera roll is required!");
-		// 	return;
-		// }
-
-		// let pickerResult = await ImagePicker.launchImageLibrary({
-		// 	allowsEditing: true,
-		// 	aspect: [4, 3],
-		// 	base64: true,
-		// });
-
-		// if (pickerResult.cancelled === true) {
-		// 	return;
-		// }
-
-		let image = await ImagePicker.showImagePicker((response) => {
-			// console.log("Response = ", response);
-			if (type === "beforeImage") {
-				setBeforeLoadingImage(true);
-			} else {
-				setAfterLoadingImage(true);
-			}
-
-			if (response.didCancel) {
-				setBeforeLoadingImage(false);
-				setAfterLoadingImage(false);
-			} else if (response.error) {
-				console.log("ImagePicker Error: ", response.error);
-			} else if (response.customButton) {
-				console.log("User tapped custom button: ", response.customButton);
-				// alert(response.customButton);
-			} else {
-				if (type === "beforeImage") {
-					setBeforeLoadingImage(false);
-					// let arr = beforeImages;
-					// arr.push(`data:image/jpg;base64,${response.data}`);
-					// setBeforeImages(arr);
-					setBeforeImages([...beforeImages, response.uri]);
-					// return response;
-				} else {
-					setAfterLoadingImage(false);
-					setAfterImages([...afterImages, response.uri]);
-					// return response;
-				}
-			}
+	const selectImages = () =>
+		ImagePicker.openPicker({
+			multiple: true,
+			maxFiles: 4,
+		}).then((images) => {
+			console.log(images[0].path);
 		});
-	};
+
+	// let openImagePickerAsync = async (type) => {
+	// 	// if (type === "beforeImage") {
+	// 	// 	setBeforeLoadingImage(true);
+	// 	// } else {
+	// 	// 	setAfterLoadingImage(true);
+	// 	// }
+	// 	// let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+	// 	// if (permissionResult.granted === false) {
+	// 	// 	alert("Permission to access camera roll is required!");
+	// 	// 	return;
+	// 	// }
+
+	// 	// let pickerResult = await ImagePicker.launchImageLibrary({
+	// 	// 	allowsEditing: true,
+	// 	// 	aspect: [4, 3],
+	// 	// 	base64: true,
+	// 	// });
+
+	// 	// if (pickerResult.cancelled === true) {
+	// 	// 	return;
+	// 	// }
+
+	// 	let image = await ImagePicker.showImagePicker((response) => {
+	// 		// console.log("Response = ", response);
+	// 		if (type === "beforeImage") {
+	// 			setBeforeLoadingImage(true);
+	// 		} else {
+	// 			setAfterLoadingImage(true);
+	// 		}
+
+	// 		if (response.didCancel) {
+	// 			setBeforeLoadingImage(false);
+	// 			setAfterLoadingImage(false);
+	// 		} else if (response.error) {
+	// 			console.log("ImagePicker Error: ", response.error);
+	// 		} else if (response.customButton) {
+	// 			console.log("User tapped custom button: ", response.customButton);
+	// 			// alert(response.customButton);
+	// 		} else {
+	// 			if (type === "beforeImage") {
+	// 				setBeforeLoadingImage(false);
+	// 				// let arr = beforeImages;
+	// 				// arr.push(`data:image/jpg;base64,${response.data}`);
+	// 				// setBeforeImages(arr);
+	// 				setBeforeImages([...beforeImages, response.uri]);
+	// 				// return response;
+	// 			} else {
+	// 				setAfterLoadingImage(false);
+	// 				setAfterImages([...afterImages, response.uri]);
+	// 				// return response;
+	// 			}
+	// 		}
+	// 	});
+	// };
 
 	let getProperties;
 	switch (props.user.user.user) {
 		case "Admin":
 			getProperties = () => {
 				axios
-					.get("http://142.93.92.22:4135/api/company/properties")
+					.get(`${URL}/api/company/properties`)
 					.then((res) => setProperties(res.data));
 			};
 			break;
@@ -109,7 +120,7 @@ const RequestForm = (props) => {
 		case "employee":
 			getProperties = () => {
 				axios
-					.get("http://142.93.92.22:4135/api/company/properties")
+					.get(`${URL}/api/company/properties`)
 					.then((res) => setProperties(res.data));
 			};
 			break;
@@ -119,7 +130,7 @@ const RequestForm = (props) => {
 				lehi;
 				axios
 
-					.get("http://142.93.92.22:4135/api/user/properties")
+					.get(`${URL}/api/user/properties`)
 					.then((res) => setProperties(res.data));
 			};
 	}
@@ -142,7 +153,7 @@ const RequestForm = (props) => {
 			let typeOfWorkString = typeOfWork.join(", ");
 
 			axios
-				.post("http://142.93.92.22:4135/api/company/photo", {
+				.post(`${URL}/api/company/photo`, {
 					imageOne: beforeImages[0],
 					imageTwo: beforeImages[1],
 					imageThree: beforeImages[2],
@@ -237,7 +248,7 @@ const RequestForm = (props) => {
 
 	const handleProjectGet = () => {
 		axios
-			.get("http://localhost:4068/api/projects")
+			.get(`${URL}/api/projects`)
 
 			.then((res) => setProjects(res.data));
 	};
@@ -341,7 +352,7 @@ const RequestForm = (props) => {
 					: null}
 				<Text>Before:</Text>
 				{beforeImages.length >= 4 ? null : (
-					<TouchableOpacity onPress={() => openImagePickerAsync("beforeImage")}>
+					<TouchableOpacity onPress={() => selectImages()}>
 						<Icon name="plus" size={30} color="black" />
 					</TouchableOpacity>
 				)}

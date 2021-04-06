@@ -10,8 +10,9 @@ import {
 	Alert,
 } from "react-native";
 import { connect } from "react-redux";
-import Axios from "axios";
+import axios from "axios";
 import UserSearch from "./UserSearch";
+import { URL } from "../../config";
 
 const ProjectUsersDisplay = (props) => {
 	const [users, setUsers] = useState([]);
@@ -31,9 +32,7 @@ const ProjectUsersDisplay = (props) => {
 	});
 
 	const hanldeAddUserPress = () => {
-		Axios.get("http://localhost:4068/api/company/users").then((res) =>
-			setUsers(res.data)
-		);
+		axios.get(`${URL}/api/company/users`).then((res) => setUsers(res.data));
 	};
 
 	const userSearchDisplay = () => {
@@ -69,11 +68,7 @@ const ProjectUsersDisplay = (props) => {
 
 	const handleAddPress = () => {
 		userId
-			? // Axios.post("http://localhost:4068/api/project/user", {
-			  // 		userId: userId,
-			  // 		projectId: props.projectId,
-			  //   })
-			  Axios.post("http://64.227.51.108:4068/api/project/user", {
+			? Axios.post(`${URL}:4068/api/project/user`, {
 					userId: userId,
 					projectId: props.projectId,
 			  })

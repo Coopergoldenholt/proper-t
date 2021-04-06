@@ -12,6 +12,8 @@ import axios from "axios";
 import moment from "moment";
 import UserDisplay from "../components/ProjectUsersDisplay";
 
+import { URL } from "../../config";
+
 const ProjectDisplay = (props) => {
 	const [users, setUsers] = useState([]);
 	const [projects, setProjects] = useState([]);
@@ -24,19 +26,11 @@ const ProjectDisplay = (props) => {
 	const getProject = () => {
 		setLoading(true);
 		axios
-			.get(
-				`http://142.93.92.22:4135/api/project/users/${props.route.params.id}`
-			)
+			.get(`${URL}/api/project/users/${props.route.params.id}`)
 
 			.then((res) => setUsers(res.data));
 		axios
-			.get(
-				`http://142.93.92.22:4135/api/project/forms/${props.route.params.id}`
-			)
-
-			// .get(
-			// 	`http://localhost:4068/api/company/property/${props.route.params.id}?page=${page}`
-			// )
+			.get(`${URL}/api/project/forms/${props.route.params.id}`)
 			.then((res) => {
 				setProjects(res.data);
 				setLoading(false);

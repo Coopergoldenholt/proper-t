@@ -12,6 +12,8 @@ import ListDisplay from "../components/ListDisplay";
 import { connect } from "react-redux";
 import axios from "axios";
 
+import { URL } from "../../config";
+
 const wait = (timeout) => {
 	return new Promise((resolve) => {
 		setTimeout(resolve, timeout);
@@ -23,6 +25,7 @@ const Dashboard = (props) => {
 	const [isLoading, setLoading] = useState(false);
 	const [page, setPage] = useState(0);
 	const [refreshing, setRefreshing] = useState(false);
+	const [firstTimeLoading, setFirstTimeLoading] = useState(true);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -38,35 +41,30 @@ const Dashboard = (props) => {
 
 	const getProperties = async () => {
 		setLoading(true);
+		setFirstTimeLoading(false);
 		// switch (props.user.user) {
 		// 	case "Admin":
-		await axios
-
-			.get(`http://142.93.92.22:4135/api/company/forms?page=${page}`)
-			.then((res) => {
-				setPostList(res.data);
-				setLoading(false);
-			});
+		await axios.get(`${URL}/api/company/forms?page=${page}`).then((res) => {
+			setPostList(res.data);
+			setLoading(false);
+		});
 		// }
 	};
 
 	const handleLoadMore = async () => {
 		let pages = page + 15;
 
-		await axios
-			.get(`http://142.93.92.22:4135/api/company/forms?page=${pages}`)
-			.then((res) => {
-				// console.log(res.data);
-				setPostList([...postList, ...res.data]);
-				setPage(page + 15);
-			});
+		await axios.get(`${URL}/api/company/forms?page=${pages}`).then((res) => {
+			setPostList([...postList, ...res.data]);
+			setPage(page + 15);
+		});
 	};
 
 	const renderRow = ({ item }) => {
 		return <ListDisplay item={item} />;
 	};
 
-	return isLoading ? (
+	return isLoading && firstTimeLoading ? (
 		<View style={styles.containerLoading}>
 			<ActivityIndicator size="large" color="#c48273" />
 		</View>

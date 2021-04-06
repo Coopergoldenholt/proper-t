@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { connect } from "react-redux";
 import { saveSession } from "../../../ducks/reducers/userReducer";
+import { URL } from "../../../config/index";
 
 function Login(props) {
 	const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ function Login(props) {
 			setLoading(true);
 			axios
 
-				.post("http://142.93.92.22:4135/api/login", {
+				.post(`${URL}/api/login`, {
 					email: email,
 					password: password,
 				})

@@ -25,7 +25,7 @@ const AdminProperties = (props) => {
 	useEffect(() => {
 		axios
 
-			.get("http://localhost:4068/api/user/properties")
+			.get(`${URL}/api/user/properties`)
 			.then((res) => setProperties(res.data));
 	}, []);
 

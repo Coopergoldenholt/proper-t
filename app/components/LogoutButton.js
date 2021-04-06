@@ -3,10 +3,11 @@ import { Text, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
 import { destroySession } from "../../ducks/reducers/userReducer";
+import { URL } from "../../config";
 
 const LogoutButton = (props) => {
 	const handleLogout = () => {
-		axios.post("http://localhost:4068/api/user/logout");
+		axios.post(`${URL}/api/user/logout`);
 		props.destroySession();
 	};
 	return (

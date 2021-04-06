@@ -8,6 +8,8 @@ import moment from "moment";
 import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 
+import { URL } from "../../config";
+
 const Projects = (props) => {
 	const [projects, setProjects] = useState([]);
 	console.log(projects);
@@ -17,7 +19,7 @@ const Projects = (props) => {
 
 	const getProjects = () => {
 		axios
-			.get("http://localhost:4068/api/projects")
+			.get(`${URL}/api/projects`)
 
 			.then((res) => setProjects(res.data));
 	};

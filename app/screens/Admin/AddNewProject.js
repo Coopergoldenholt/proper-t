@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import DropDownPicker from "react-native-dropdown-picker";
 import PropertySearch from "../../components/PropertySearch";
 
+import { URL } from "../../../config";
+
 const AddNewProject = (props) => {
 	const [projectName, setProjectName] = useState();
 	const [managedCompanies, setManagedCompanies] = useState([]);
@@ -36,8 +38,7 @@ const AddNewProject = (props) => {
 
 	const handleRegister = () => {
 		axios
-
-			.post("http://localhost:4068/api/projects", {
+			.post(`${URL}/api/projects`, {
 				name: projectName,
 			})
 			.then((res) =>
@@ -62,7 +63,7 @@ const AddNewProject = (props) => {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(`http://localhost:4068/api/companies/${props.user.user.companyId}`)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
@@ -76,9 +77,7 @@ const AddNewProject = (props) => {
 
 	const getProperties = () => {
 		axios
-			.get(
-				`http://localhost:4068/api/company/managed-company/properties/${companyId}`
-			)
+			.get(`${URL}/api/company/managed-company/properties/${companyId}`)
 
 			.then((res) => setProperties(res.data));
 		return null;
@@ -121,7 +120,7 @@ const AddNewProject = (props) => {
 			Alert.alert("Please Select A Property From the Dropdown");
 		} else {
 			axios
-				.post(`http://142.93.92.22:4135/api/projects`, {
+				.post(`${URL}/api/projects`, {
 					mangagedCompanyId: companyId,
 					name: projectName,
 					propertyId: propertyId,
