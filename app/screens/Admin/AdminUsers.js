@@ -14,6 +14,8 @@ import DeleteButton from "../../components/DeleteButton";
 import EditButton from "../../components/EditButton";
 import TextClick from "../../components/TextClick";
 
+import { URL } from "../../../config";
+
 const wait = (timeout) => {
 	return new Promise((resolve) => {
 		setTimeout(resolve, timeout);
@@ -27,20 +29,20 @@ const AdminUsers = ({ navigation }) => {
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
-		axios.get("http://142.93.92.22:4135/api/company/customers").then((res) => {
+		axios.get(`${URL}/api/company/customers`).then((res) => {
 			setUsers(res.data);
 		});
-		axios.get("http://142.93.92.22:4135/api/company/employees").then((res) => {
+		axios.get(`${URL}/api/company/employees`).then((res) => {
 			setEmployees(res.data);
 		});
 		wait(2000).then(() => setRefreshing(false));
 	}, []);
 
 	useEffect(() => {
-		axios.get("http://142.93.92.22:4135/api/company/customers").then((res) => {
+		axios.get(`${URL}/api/company/customers`).then((res) => {
 			setUsers(res.data);
 		});
-		axios.get("http://142.93.92.22:4135/api/company/employees").then((res) => {
+		axios.get(`${URL}/api/company/employees`).then((res) => {
 			setEmployees(res.data);
 		});
 	}, []);

@@ -44,9 +44,7 @@ const PropertyDisplay = (props) => {
 		setPage(0);
 		await axios
 
-			.get(
-				`http://142.93.92.22:4135/api/company/property/${props.route.params.id}?page=${page}`
-			)
+			.get(`${URL}/api/company/property/${props.route.params.id}?page=${page}`)
 			.then((res) => {
 				setPostList(res.data);
 				setLoading(false);
@@ -57,9 +55,7 @@ const PropertyDisplay = (props) => {
 		let pages = page + 15;
 
 		await axios
-			.get(
-				`http://142.93.92.22:4135/api/company/property/${props.route.params.id}?page=${pages}`
-			)
+			.get(`${URL}/api/company/property/${props.route.params.id}?page=${pages}`)
 			.then((res) => {
 				// console.log(res.data);
 				setPostList([...postList, ...res.data]);

@@ -12,6 +12,8 @@ import { withNavigation } from "react-navigation";
 import axios from "axios";
 import DropDownPicker from "react-native-dropdown-picker";
 
+import { URL } from "../../../config";
+
 function AdminRegister(props) {
 	const [email, setEmail] = useState("");
 
@@ -26,7 +28,7 @@ function AdminRegister(props) {
 	const handleRegister = () => {
 		axios
 
-			.post("http://142.93.92.22:4135/api/register", {
+			.post(`${URL}/api/register`, {
 				email: email,
 
 				typeOfUser: typeOfUser,
@@ -56,9 +58,7 @@ function AdminRegister(props) {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(
-				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
-			)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

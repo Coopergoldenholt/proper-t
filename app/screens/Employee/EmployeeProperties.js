@@ -17,6 +17,8 @@ import TextClick from "../../components/TextClick";
 import EditButton from "../../components/EditButton";
 import PropertySearch from "../../components/PropertySearch";
 
+import { URL } from "../../../config";
+
 const AdminProperties = (props) => {
 	const [properties, setProperties] = useState([]);
 	const [managedCompanies, setManagedCompanies] = useState([]);
@@ -29,15 +31,13 @@ const AdminProperties = (props) => {
 		getManagedCompanies();
 		axios
 
-			.get("http://142.93.92.22:4135/api/company/properties")
+			.get(`${URL}/api/company/properties`)
 			.then((res) => setProperties(res.data));
 	}, []);
 
 	const getManagedCompanies = () => {
 		axios
-			.get(
-				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
-			)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

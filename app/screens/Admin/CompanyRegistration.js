@@ -12,13 +12,15 @@ import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
 import axios from "axios";
 
+import { URL } from "../../../config";
+
 const CompanyRegistration = (props) => {
 	const [companyName, setCompanyName] = useState("");
 
 	const handleRegister = () => {
 		axios
 
-			.post("http://142.93.92.22:4135/api/company/managing-company", {
+			.post(`${URL}/api/company/managing-company`, {
 				companyName: companyName,
 			})
 			.then((res) =>

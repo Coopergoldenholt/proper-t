@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { saveSession } from "../../../ducks/reducers/userReducer";
 
+import { URL } from "../../../config";
+
 function Register(props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -32,7 +34,7 @@ function Register(props) {
 			const lowerEmail = email.toLowerCase();
 			axios
 
-				.post("http://142.93.92.22:4135/api/signup", {
+				.post(`${URL}/api/signup`, {
 					email: email,
 					password: password,
 					name: name,

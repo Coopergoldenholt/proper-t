@@ -13,6 +13,8 @@ import axios from "axios";
 import DropDownPicker from "react-native-dropdown-picker";
 import { withNavigation } from "react-navigation";
 
+import { URL } from "../../../config";
+
 const AdminPropertyRegistration = (props) => {
 	const [name, setName] = useState("");
 	const [company, setCompany] = useState(null);
@@ -26,7 +28,7 @@ const AdminPropertyRegistration = (props) => {
 		company
 			? axios
 
-					.post("http://142.93.92.22:4135/api/company/properties", {
+					.post(`${URL}/api/company/properties`, {
 						name: name,
 						managedCompany: company,
 						companyId: props.user.user.companyId,
@@ -53,9 +55,7 @@ const AdminPropertyRegistration = (props) => {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(
-				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
-			)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});

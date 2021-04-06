@@ -19,6 +19,8 @@ import TextClick from "../../components/TextClick";
 import EditButton from "../../components/EditButton";
 import PropertySearch from "../../components/PropertySearch";
 
+import { URL } from "../../../config";
+
 const wait = (timeout) => {
 	return new Promise((resolve) => {
 		setTimeout(resolve, timeout);
@@ -38,16 +40,14 @@ const AdminProperties = (props) => {
 		setRefreshing(true);
 		axios
 
-			.get(
-				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
-			)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
 		getManagedCompanies();
 		axios
 
-			.get("http://142.93.92.22:4135/api/company/properties")
+			.get(`${URL}/api/company/properties`)
 			.then((res) => setProperties(res.data));
 		wait(2000).then(() => setRefreshing(false));
 	}, []);
@@ -56,7 +56,7 @@ const AdminProperties = (props) => {
 		getManagedCompanies();
 		axios
 
-			.get("http://142.93.92.22:4135/api/company/properties")
+			.get("${URL}/api/company/properties")
 			.then((res) => setProperties(res.data));
 	}, []);
 	useEffect(() => {
@@ -66,9 +66,7 @@ const AdminProperties = (props) => {
 	const getManagedCompanies = () => {
 		axios
 
-			.get(
-				`http://142.93.92.22:4135/api/companies/${props.user.user.companyId}`
-			)
+			.get(`${URL}/api/companies/${props.user.user.companyId}`)
 			.then((res) => {
 				setManagedCompanies(res.data);
 			});
