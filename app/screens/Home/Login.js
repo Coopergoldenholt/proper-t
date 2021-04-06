@@ -25,7 +25,6 @@ function Login(props) {
 		} else {
 			setLoading(true);
 			axios
-
 				.post(`${URL}/api/login`, {
 					email: email,
 					password: password,
